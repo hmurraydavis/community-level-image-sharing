@@ -23,9 +23,8 @@ the owner of the image.
 Use cases
 ---------
 
-1. An open source project wants to make a prepared VM image available so in
-   order to use the project's software, all you have to do is boot an instance
-   from their image. They are too busy writing software to worry about the
+1. An open source project wants to make a prepared VM image available so users simply boot an instance
+   from that image , to use the project's software. The developers of the project are too busy writing software to worry about the
    hassle of maintaining a list of "customers" as they'd have to do with
    current v2 image sharing. At the same time, the cloud provider hosting the
    prepared image doesn't want to make this image public, as that would imply
@@ -34,18 +33,18 @@ Use cases
 
 2. A cloud provider wants to discourage users from using a public image that
    is getting old, for example an image which is missing some security patches
-   or has no more vendor support, but doesn't want to delete the image because
-   some users may still require it. Reasons for requiring the old image could
-   include needing to rebuild a server, or the user has custom patches for
-   that particular image. The vendor could make the image a "community' image,
-   which means that:
+   or is no longer supported by the vendor, but doesn't want to delete the image because
+   some users may still require it. Users could need the old immage to rebuild a server, or because they have custom patches for
+   that, particular image. 
+   
+   In either case, the vendor could make the image a "community' image and alieviate the challenges presented above. This means that:
 
-   a) It won't appear in user's default image lists. This means they won't
+   a) The community image won't appear in user's default image lists. This means they won't
    know about it unless they are motivated to seek it out, for example by
    asking other users for the UUID.
 
-   b) Since it's not a "public" image any more, it doesn't imply the same
-   level of support as a provider-supplied public image.
+   b) Since the image is no longer "public," it doesn't imply the same
+   level of support from the vendor as a provider-supplied, public image.
 
 
 Proposed change
@@ -54,11 +53,11 @@ Proposed change
 The chosen method of implementing this functionality is to add a membership
 record for an image that has a target of ``"*"`` (i.e. it is shared with all
 tenants) but with ``membership_status = "community"``. This marks it as a
-community image very simply, with few modifications to existing code.
+community image very simply and requires few modifications to existing code.
 
 This respects the current anti-spam provisions in the glance v2 api; when an
-image owner makes the image a "community" image, any other tenant should be
-able to boot an instance from the image, but the image will not show up in any
+image owner makes an image a "community" image, any other tenant should be
+able to boot an instance from that image, but the image will not show up in any
 tenant's default image-list.
 
 
@@ -68,7 +67,7 @@ Alternatives
 Adding image aliases
 ~~~~~~~~~~~~~~~~~~~~
 
-A completely different way of solving the usecase for cloud providers
+A completely different way of solving this usecase for cloud providers
 (discouraging users from using an older version of a public image) could be to
 create a mechanism to make an image alias, which could point at the newest
 version of the public image. There is a abandoned blueprint for this feature
